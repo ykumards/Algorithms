@@ -5,8 +5,7 @@ class Node(object):
 
 
 class LinkedList(object):
-    def __init__(self, head_val):
-        head = Node(head_val)
+    def __init__(self, head):
         self.head = head
 
     def add(self, value):
@@ -37,12 +36,58 @@ class LinkedList(object):
             slow = slow.next
         return slow.data
 
+def removeDups(l):
+    """
+    Input is some linked list, and the function returns a
+    linked list without any duplicate elements
+    """
+    if not l.head:
+        return None
+    alphas = {}
+    current = l.head
+    previous = None
+    while current:
+        item = current.data
+        if item not in alphas:
+            alphas[item] = 1
+            previous = current
+        else:
+            # for deletion we just update previous.next
+            # previous pointer stays put
+            previous.next = current.next
+        current = current.next
+    return l
+
+def removeDups_mem(l):
+    """
+    To remove duplicates without using a buffer, runtime has to be sacrificed
+    We get O(n^2) but O(1) space
+    """
+    if not l.head:
+        return None
+
+    current = l.head
+    while current:
+        item = current.data
+        runner = current
+        while runner and runner.next:
+            if item == runner.next.data:
+                # Have to delete runner.next node for this case
+                runner.next = runner.next.next
+            runner = runner.next
+        current = current.next
+    return l
+
 if __name__ == "__main__":
-    l = LinkedList(1)
+    l = LinkedList(Node(1))
     l.add(2)
     l.add(3)
     l.add(4)
     l.add(5)
+    l.add(3)
+    l.add(2)
+    l.add(1)
     l.pretty_print()
-    print l.mid_point()
+    l_m = removeDups_mem(l)
+    l_m.pretty_print()
         
