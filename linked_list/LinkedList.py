@@ -135,9 +135,71 @@ def addition(l1, l2):
     Given two linked lists, whose each node represents a number's digit
     (e.g., 1254 == 4 -> 5 -> 2 -> 1 -> NULL)
     Add these two numbers and return the linked list
+    TODO: Design a recursive solution
     """
-    
+    num1 = l1.head
+    num2 = l2.head
+    carry = 0
+    # Creating a place holder head for the result LL
+    # this will be chopped off just before returning
+    result_head = Node(-1)
+    current = result_head
+    while num1 or num2 or carry: # Important not to forget the leftover carry (think 99 + 1)
+        item1 = item2 = 0
+        if num1:
+            item1 = num1.data
+            num1 = num1.next
+        if num2:
+            item2 = num2.data
+            num2 = num2.next
+        summed= item1 + item2 + carry
+        digit = summed % 10 # 23 % 10 = 3
+        carry = summed / 10 # Integer division
+        new_node = Node(digit)
+        current.next = new_node
+        current = current.next
+    result_list = LinkedList(result_head.next)
+    return result_list
 
+def circular_ll(l):
+    """
+    Given a circular linked list, this would return the beginning of the circular loop
+    Returns False if the list is linear. This is a toughie!
+    Observations:
+    1. We will use two pointers, one moving twice as fast as the other. Then if the two
+       meet again, we have a loop.
+    2. If they both started from the same place, they will meet at the start. (fast ptr
+       would have made two laps by the time the slow ptr made just one!)
+    3. If They didn't start at the same place, but say the fast ptr started k steps ahead,
+       then they will meet k steps before the start of the loop.
+    So we just have to run these two pointers, the place where they meet will be k steps 
+    before the start of the loop. Also, this k is the head start that fast ptr got before the small
+    ptr entered the loop, so head is k steps away from the start of the loop.
+    Reset slow ptr back to head, and leave the fast ptr at the meeting place. Since both these starting
+    points are k steps away from the loop start, by running both the pointers AT THE SAME PACE, we 
+    are guaranteed that they will meet again at the loop start.
+    """
+    fast = l.head
+    slow = l.head
+    # Run one to make them meet
+    while fast and fast.next:
+        fast = fast.next.next
+        slow = slow.next
+        if fast.data == slow.data:
+            break
+
+    # Handle the case of no circularity
+    if not fast.next:
+        return False
+    # Setting slow back to head
+    slow = l.head
+    while slow.data != fast.data:
+        slow = slow.next
+        fast = fast.next
+
+    return fast.data
+    
+    
          
 if __name__ == "__main__":
     l = LinkedList(Node(1))
@@ -152,4 +214,15 @@ if __name__ == "__main__":
     #l_m = removeDups(l, True)
     #l_m.pretty_print()
     print k_to_last_iter(l.head, 0)
-     
+
+    l1 = LinkedList(Node(3))
+    l1.add(9)
+    l1.add(9)
+    l2 = LinkedList(Node(5))
+    l2.add(9)
+    l2.add(9)
+    l1.pretty_print()
+    l2.pretty_print()
+    result = addition(l1, l2)
+    result.pretty_print()
+
