@@ -50,6 +50,27 @@ class LinkedList(object):
         del_node.next = current.next
         return "Done. Print to verify."
 
+    def reverse_iter(self):
+        current = self.head
+        previous = None
+        nextNode = current.next
+        while nextNode:
+            current.next = previous
+            previous = current
+            current = nextNode
+            nextNode = nextNode.next
+
+def reverse(l):
+    current = l.head
+    _reverse(current)
+
+def _reverse(current):
+    if not current.next:
+        return current
+    previous = _reverse(current.next)
+    previous.next = current
+    return current
+
 ######### Remove Duplicates ########################
 def removeDups(l, useBuffer):
     """
@@ -225,4 +246,5 @@ if __name__ == "__main__":
     l2.pretty_print()
     result = addition(l1, l2)
     result.pretty_print()
+    
 
