@@ -8,12 +8,16 @@ class LinkedList(object):
     def __init__(self, head):
         self.head = head
 
-    def add(self, value):
-        new_node = Node(value)
+    def addNode(self, new_node):
         current = self.head
         while current.next:
             current = current.next
         current.next = new_node
+
+    def add(self, value):
+        new_node = Node(value)
+        self.addNode(new_node)
+        
 
     def pretty_print(self):
         current = self.head
