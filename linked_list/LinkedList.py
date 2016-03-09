@@ -220,7 +220,9 @@ def circular_ll(l):
 
     return fast.data
     
-    
+# TODO: 
+# 1. Recursive kth last element 
+# 2. isPali: Implement a function to check if ll is palindrome
          
 if __name__ == "__main__":
     l = LinkedList(Node(1))
@@ -231,10 +233,14 @@ if __name__ == "__main__":
     l.add(3)
     l.add(2)
     l.add(1)
+    print "l is:",
     l.pretty_print()
     #l_m = removeDups(l, True)
     #l_m.pretty_print()
-    print k_to_last_iter(l.head, 0)
+    # Calling kth last element
+    k = 1
+    print "%dth last element" %(k)
+    print k_to_last_iter(l.head, k)
 
     l1 = LinkedList(Node(3))
     l1.add(9)
